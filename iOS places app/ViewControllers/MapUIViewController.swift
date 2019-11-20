@@ -19,7 +19,6 @@ class MapUIViewController: UIViewController, GMSMapViewDelegate, SendFilterProto
         super.viewDidLoad()
         locationManager.delegate = self
         mapView.delegate = self
-        request()
     }
     
     func setFilters() {
@@ -122,7 +121,11 @@ class MapUIViewController: UIViewController, GMSMapViewDelegate, SendFilterProto
     }
     
     func didUpdate(location: CLLocation) {
-           mapView.isMyLocationEnabled = true
-       }
-       
+        request()
+        mapView.isMyLocationEnabled = true
+    }
+    
+    func authorizationDeclined() {
+        request()
+    }
 }

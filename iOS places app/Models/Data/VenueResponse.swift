@@ -1,8 +1,10 @@
-// This file was generated from JSON Schema using quicktype, do not modify it directly.
-// To parse the JSON, add this file to your project and do:
 //
-//   let response = try? newJSONDecoder().decode(Response.self, from: jsonData)
-
+//  Venue.swift
+//  iOS places app
+//
+//  Created by Ioannis Frontzos on 20/11/19.
+//  Copyright © 2019 Ioannis Frontzos. All rights reserved.
+//
 import Foundation
 
 struct VenueResponse: Codable {

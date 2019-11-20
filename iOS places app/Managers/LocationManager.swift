@@ -10,7 +10,8 @@ import Foundation
 import CoreLocation
 
 protocol LocationUpdateProtocol {
-  func didUpdate(location : CLLocation)
+    func didUpdate(location : CLLocation)
+    func authorizationDeclined()
 }
 
 class LocationManager: NSObject, CLLocationManagerDelegate {
@@ -25,54 +26,24 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     private override init () {
         super.init()
         self.locationManager.delegate = self
-        locationManager.requestAlwaysAuthorization()
+        locationManager.requestWhenInUseAuthorization()
         self.locationManager.startUpdatingLocation()
     }
     
-        func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-//            request()
-            guard status == .authorizedWhenInUse else {
-                return
-            }
-            locationManager.startUpdatingLocation()
-//            mapView.isMyLocationEnabled = true
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        guard status == .authorizedWhenInUse else {
+            self.delegate.authorizationDeclined()
+            return
         }
+        locationManager.startUpdatingLocation()
+    }
     
-        func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-            if let location = locations.first {
-                currentLocation = location
-                self.delegate.didUpdate(location: location)
-    
-            }
-            locationManager.stopUpdatingLocation()
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if let location = locations.first {
+            currentLocation = location
+            self.delegate.didUpdate(location: location)
+            
         }
-    
-//    // MARK: - CLLocationManagerDelegate
-//    func locationManager(manager: CLLocationManager, didUpdateToLocation newLocation: CLLocation, fromLocation oldLocation: CLLocation) {
-//        currentLocation = newLocation
-//        let userInfo : NSDictionary = ["location" : currentLocation!]
-//
-//        dispatch_async(dispatch_get_main_queue()) { () -> Void in
-//            self.delegate.locationDidUpdateToLocation(self.currentLocation!)
-//            NSNotificationCenter.defaultCenter().postNotificationName(kLocationDidChangeNotification, object: self, userInfo: userInfo as [NSObject : AnyObject])
-//        }
-//    }
-    
-    
-//    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-//        request()
-//        guard status == .authorizedWhenInUse else {
-//            return
-//        }
-//        locationManager.startUpdatingLocation()
-//        mapView.isMyLocationEnabled = true
-//    }
-//
-//    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-//        if let location = locations.first {
-//            UserLocation.shared.latitude = location.coordinate.latitude
-//            UserLocation.shared.longitude = location.coordinate.longitude
-//        }
-//        locationManager.stopUpdatingLocation()
-//    }
+        locationManager.stopUpdatingLocation()
+    }
 }

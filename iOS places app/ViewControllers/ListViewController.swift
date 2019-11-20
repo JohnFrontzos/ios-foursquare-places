@@ -38,26 +38,24 @@ class ListViewController: UITableViewController {
             return UITableViewCell()
         }
         
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? PlaceTableViewCell  else {
-            fatalError("The dequeued cell is not an instance of PlaceTableViewCell.")
-        }
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
         
         let place = places[indexPath.row]
-        cell.name.text = place.name
-        cell.type.text = place.type.capitalized
+        (cell.viewWithTag(21) as! UILabel).text = place.name
+        (cell.viewWithTag(22) as! UILabel).text = place.type.capitalized
         
         let userLocation = LocationManager.shared.currentLocation
         
         if (userLocation == nil) {
-            cell.distance.text = "No distance"
+            (cell.viewWithTag(23) as! UILabel).text = "No distance"
         } else {
-            cell.distance.text = String(format: "%.1f km", CLLocation(latitude: place.latitude, longitude: place.longitude).distance(from: CLLocation(latitude: userLocation!.coordinate.latitude, longitude: userLocation!.coordinate.longitude))/1000)
+            (cell.viewWithTag(23) as! UILabel).text = String(format: "%.1f km", CLLocation(latitude: place.latitude, longitude: place.longitude).distance(from: CLLocation(latitude: userLocation!.coordinate.latitude, longitude: userLocation!.coordinate.longitude))/1000)
         }
         
         let centerMap = String(format: ListViewController.MAPBOX_PARAM_CENTER, place.longitude, place.latitude, 15)
         let size = String(format: ListViewController.MAPBOX_PARAM_SIZE, 100, 90)
         let url = ("\(ListViewController.MAPBOX_BASE_URL)\(centerMap)\(size)\(ListViewController.MAPBOX_ACCESSO_TOKEN)")
-        cell.placeImage?.downloaded(from: url)
+        (cell.viewWithTag(20) as! UIImageView).downloaded(from: url)
         return cell
     }
 }
