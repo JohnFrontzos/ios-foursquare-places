@@ -46,7 +46,13 @@ class ListViewController: UITableViewController {
         cell.name.text = place.name
         cell.type.text = place.type.capitalized
         
-        cell.distance.text = String(format: "%.1f km",CLLocation(latitude: place.latitude, longitude: place.longitude).distance(from: CLLocation(latitude: UserLocation.shared.latitude, longitude: UserLocation.shared.longitude))/1000)
+        let userLocation = LocationManager.shared.currentLocation
+        
+        if (userLocation == nil) {
+            cell.distance.text = "No distance"
+        } else {
+            cell.distance.text = String(format: "%.1f km", CLLocation(latitude: place.latitude, longitude: place.longitude).distance(from: CLLocation(latitude: userLocation!.coordinate.latitude, longitude: userLocation!.coordinate.longitude))/1000)
+        }
         
         let centerMap = String(format: ListViewController.MAPBOX_PARAM_CENTER, place.longitude, place.latitude, 15)
         let size = String(format: ListViewController.MAPBOX_PARAM_SIZE, 100, 90)

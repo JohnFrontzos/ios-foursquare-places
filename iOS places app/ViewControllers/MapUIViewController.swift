@@ -9,20 +9,17 @@
 import UIKit
 import GoogleMaps
 
-class MapUIViewController: UIViewController, GMSMapViewDelegate, SendFilterProtocol {
+class MapUIViewController: UIViewController, GMSMapViewDelegate, SendFilterProtocol, LocationUpdateProtocol {
     
-    
-    private let locationManager = CLLocationManager()
+    let locationManager = LocationManager.shared
     
     @IBOutlet weak var mapView: GMSMapView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         locationManager.delegate = self
         mapView.delegate = self
-        locationManager.requestWhenInUseAuthorization()
-        
+        request()
     }
     
     func setFilters() {
@@ -58,7 +55,12 @@ class MapUIViewController: UIViewController, GMSMapViewDelegate, SendFilterProto
         preview.center.x = self.view.center.x
         preview.name.text = place.name
         preview.type.text = place.type
-        preview.distance.text = String(format: "%.1f km", CLLocation(latitude: place.latitude, longitude: place.longitude).distance(from: CLLocation(latitude: UserLocation.shared.latitude, longitude: UserLocation.shared.longitude))/1000)
+        
+        if (locationManager.currentLocation == nil) {
+            preview.distance.text = "No distance"
+        } else {
+            preview.distance.text = String(format: "%.1f km", CLLocation(latitude: place.latitude, longitude: place.longitude).distance(from: CLLocation(latitude: locationManager.currentLocation!.coordinate.latitude, longitude: locationManager.currentLocation!.coordinate.longitude))/1000)
+        }
         let centerMap = String(format: ListViewController.MAPBOX_PARAM_CENTER, place.longitude, place.latitude, 15)
         let size = String(format: ListViewController.MAPBOX_PARAM_SIZE, 320, 138)
         let url = ("\(ListViewController.MAPBOX_BASE_URL)\(centerMap)\(size)\(ListViewController.MAPBOX_ACCESSO_TOKEN)")
@@ -75,7 +77,6 @@ class MapUIViewController: UIViewController, GMSMapViewDelegate, SendFilterProto
     
     func request(){
         checkAPIkeys()
-    
         DataService.shared.fetch{ (result) in
             switch result {
             case .success(let places):
@@ -119,26 +120,9 @@ class MapUIViewController: UIViewController, GMSMapViewDelegate, SendFilterProto
             self.present(alert, animated: true)
         }
     }
-}
-
-extension MapUIViewController: CLLocationManagerDelegate {
     
-    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        request()
-        guard status == .authorizedWhenInUse else {
-            return
-        }
-        locationManager.startUpdatingLocation()
-        mapView.isMyLocationEnabled = true
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        if let location = locations.first {
-            UserLocation.shared.latitude = location.coordinate.latitude
-            UserLocation.shared.longitude = location.coordinate.longitude
-        }
-        locationManager.stopUpdatingLocation()
-    }
-    
-    
+    func didUpdate(location: CLLocation) {
+           mapView.isMyLocationEnabled = true
+       }
+       
 }

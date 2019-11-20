@@ -5,69 +5,11 @@
 
 import Foundation
 
-// MARK: - Response
 struct VenueResponse: Codable {
     let meta: Meta
     let response: ResponseClass
 }
 
-// MARK: - Meta
-struct Meta: Codable {
-    let code: Int
-    let requestID: String
-
-    enum CodingKeys: String, CodingKey {
-        case code
-        case requestID = "requestId"
-    }
-}
-
-// MARK: - ResponseClass
-struct ResponseClass: Codable {
-    let venues: [Venue]
-}
-
-// MARK: - Venue
-struct Venue: Codable {
-    let id, name: String
-    let location: Location
-    let categories: [Category]
-
-    enum CodingKeys: String, CodingKey {
-        case id, name, location, categories
-    }
-    
-    func toPlace() -> Place{
-        Place(id: self.id, name: self.name, type: self.categories[0].name, latitude: self.location.lat, longitude: self.location.lng)
-    }
-}
-
-// MARK: - Category
-struct Category: Codable {
-    let id, name, pluralName, shortName: String
-    let icon: Icon
-    let primary: Bool
-}
-
-// MARK: - Icon
-struct Icon: Codable {
-    let iconPrefix: String
-    let suffix: String
-
-    enum CodingKeys: String, CodingKey {
-        case iconPrefix = "prefix"
-        case suffix
-    }
-}
-
-// MARK: - Location
-struct Location: Codable {
-    let lat, lng: Double
-    let cc, city, state, country: String
-    let formattedAddress: [String]
-}
-
-// MARK: - Encode/decode helpers
 class JSONNull: Codable, Hashable {
 
     public static func == (lhs: JSONNull, rhs: JSONNull) -> Bool {
