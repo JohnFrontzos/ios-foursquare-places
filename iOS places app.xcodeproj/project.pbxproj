@@ -19,7 +19,6 @@
 		3991D964237C6A3D00695356 /* Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3991D963237C6A3D00695356 /* Place.swift */; };
 		3991D966237C795D00695356 /* TypesFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3991D965237C795C00695356 /* TypesFilter.swift */; };
 		399DD0A1238534D700929C99 /* Venue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399DD0A0238534D700929C99 /* Venue.swift */; };
-		399DD0A32385352F00929C99 /* ResponseClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399DD0A22385352F00929C99 /* ResponseClass.swift */; };
 		399DD0A52385357E00929C99 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399DD0A42385357E00929C99 /* Category.swift */; };
 		399DD0A7238535A800929C99 /* Icon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399DD0A6238535A800929C99 /* Icon.swift */; };
 		399DD0AA2385360500929C99 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399DD0A92385360500929C99 /* Location.swift */; };
@@ -48,7 +47,6 @@
 		3991D963237C6A3D00695356 /* Place.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Place.swift; sourceTree = "<group>"; };
 		3991D965237C795C00695356 /* TypesFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypesFilter.swift; sourceTree = "<group>"; };
 		399DD0A0238534D700929C99 /* Venue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Venue.swift; sourceTree = "<group>"; };
-		399DD0A22385352F00929C99 /* ResponseClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseClass.swift; sourceTree = "<group>"; };
 		399DD0A42385357E00929C99 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		399DD0A6238535A800929C99 /* Icon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Icon.swift; sourceTree = "<group>"; };
 		399DD0A92385360500929C99 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
@@ -140,7 +138,6 @@
 			children = (
 				393BA11A2382E2CB00D67EA8 /* VenueResponse.swift */,
 				399DD0A0238534D700929C99 /* Venue.swift */,
-				399DD0A22385352F00929C99 /* ResponseClass.swift */,
 				399DD0A42385357E00929C99 /* Category.swift */,
 				399DD0A6238535A800929C99 /* Icon.swift */,
 				399DD0A92385360500929C99 /* Location.swift */,
@@ -349,7 +346,6 @@
 				39A98CC9237994C900A89AD9 /* MapUIViewController.swift in Sources */,
 				399DD0AE238537FA00929C99 /* LocationManager.swift in Sources */,
 				39A98CC723796B6800A89AD9 /* UIImageViewExtension.swift in Sources */,
-				399DD0A32385352F00929C99 /* ResponseClass.swift in Sources */,
 				390E65C12379E88100F3AFBE /* Places.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

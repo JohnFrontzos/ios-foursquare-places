@@ -11,6 +11,5 @@ import Foundation
 // MARK: - Location
 struct Location: Codable {
     let lat, lng: Double
-    let cc, city, state, country: String
     let formattedAddress: [String]
 }

@@ -14,5 +14,4 @@ struct Place{
     let type: String
     let latitude: Double
     let longitude: Double
-    
 }

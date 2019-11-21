@@ -39,6 +39,10 @@ class MapUIViewController: UIViewController, GMSMapViewDelegate, SendFilterProto
         removePreview()
     }
     
+    func mapView(_ mapView: GMSMapView, idleAt position: GMSCameraPosition) {
+        request()
+    }
+    
     func mapView(_ mapView: GMSMapView, didTapAt coordinate: CLLocationCoordinate2D) {
         removePreview()
     }
@@ -76,7 +80,14 @@ class MapUIViewController: UIViewController, GMSMapViewDelegate, SendFilterProto
     
     func request(){
         checkAPIkeys()
-        DataService.shared.fetch{ (result) in
+        
+        if(mapView.layer.cameraZoomLevel < 10) {
+            return
+        }
+        
+        let northEast = mapView.projection.coordinate(for: CGPoint(x: mapView.layer.frame.width, y: 0))
+        let southWest = mapView.projection.coordinate(for: CGPoint(x: 0, y: mapView.layer.frame.height))
+        DataService.shared.fetchPlaces(swLatitude: southWest.latitude, swLongitude: southWest.longitude, neLatitude: northEast.latitude, neLongitude: northEast.longitude){ (result) in
             switch result {
             case .success(let places):
                 Places.shared.places = places
@@ -103,11 +114,6 @@ class MapUIViewController: UIViewController, GMSMapViewDelegate, SendFilterProto
                     bounds = bounds.includingCoordinate(marker.position)
                 }
             }
-            if(updateCamera) {
-                let update = GMSCameraUpdate.fit(bounds, withPadding: 100)
-                self.mapView.animate(with: update)
-            }
-            
         }
     }
     
@@ -121,11 +127,13 @@ class MapUIViewController: UIViewController, GMSMapViewDelegate, SendFilterProto
     }
     
     func didUpdate(location: CLLocation) {
-        request()
         mapView.isMyLocationEnabled = true
+        let camera = GMSCameraPosition.camera(withLatitude: location.coordinate.latitude, longitude: location.coordinate.longitude,zoom: 16)
+        self.mapView.animate(to: camera)
     }
     
     func authorizationDeclined() {
         request()
     }
+    
 }

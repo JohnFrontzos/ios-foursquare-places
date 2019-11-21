@@ -18,6 +18,10 @@ struct Venue: Codable {
     }
     
     func toPlace() -> Place{
-        Place(id: self.id, name: self.name, type: self.categories[0].name, latitude: self.location.lat, longitude: self.location.lng)
+        Place(id: self.id,
+              name: self.name,
+              type: self.categories[0].name,
+              latitude: self.location.lat,
+              longitude: self.location.lng)
     }
 }
